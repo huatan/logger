@@ -36,7 +36,7 @@ func InitLogger(config Config)(err error){
 	if err != nil {
 		return
 	}
-	Debug("init logger success")
+	Info("init logger success")
 	return
 }
 
