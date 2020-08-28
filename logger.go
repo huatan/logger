@@ -33,6 +33,10 @@ func InitLogger(config Config)(err error){
 	default:
 		err = fmt.Errorf("unsupport logger method:%s",config.Method)
 	}
+	if err != nil {
+		return
+	}
+	Debug("init logger success")
 	return
 }
 

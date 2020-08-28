@@ -5,15 +5,6 @@ import (
 	"log"
 )
 
-func initLogger(config logger.Config) (err error) {
-
-	err = logger.InitLogger(config)
-	if err != nil {
-		return
-	}
-	logger.Debug("init logger success")
-	return
-}
 
 func Run() {
 	for {
@@ -22,7 +13,7 @@ func Run() {
 	}
 }
 func main() {
-	err := initLogger(logger.Config{
+	err := logger.InitLogger(logger.Config{
 		Method:       "file",
 		LogPath:      "log/",//需要预先建立log文件夹
 		LogName:      "test",
