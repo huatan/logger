@@ -17,7 +17,7 @@ func main() {
 		Method:       "file",
 		LogPath:      "log/",//需要预先建立log文件夹
 		LogName:      "test",
-		LogLevel:     logger.LogLevelTrace,
+		LogLevel:     logger.LogLevelInfo,
 		LogSplitType: logger.LogSplitTypeSize,
 		LogSplitSize: 50 << 20,
 	})
