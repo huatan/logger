@@ -2,6 +2,8 @@
 # 使用方法
 ### 基本使用
 ```
+import "github.com/huatan/logger"
+
 err := logger.InitLogger(logger.Config{
  		Method:       "file",
  		LogPath:      "log/",//需要预先建立log文件夹
