@@ -58,4 +58,7 @@ func Error(format string,args ...interface{})  {
 func Fatal(format string,args ...interface{})  {
 	log.Fatal(format,args...)
 }
+func Close()  {
+	log.Close()
+}
 

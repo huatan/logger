@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"github.com/huatan/logger/utils"
 	"os"
 	"time"
 )
@@ -12,7 +13,7 @@ type FileLogger struct {
 	logName       string
 	file          *os.File
 	errorFile     *os.File
-	logDataChan   chan *LogData
+	logDataChan   chan *utils.LogData
 	logSplitType  int
 	logSplitSize  int64
 	lastSplitTime time.Time
@@ -50,7 +51,7 @@ func NewFileLogger(config Config) (log LogInterface, err error) {
 		level:        config.LogLevel,
 		logPath:      logPath,
 		logName:      logName,
-		logDataChan:  make(chan *LogData, logChanSize),
+		logDataChan:  make(chan *utils.LogData, logChanSize),
 		logSplitType: config.LogSplitType,
 		logSplitSize: config.LogSplitSize,
 	}
@@ -58,6 +59,11 @@ func NewFileLogger(config Config) (log LogInterface, err error) {
 	return
 }
 func (f *FileLogger) Init() {
+	//如果路径不存在，创造路径
+	exists, err := utils.PathExists(f.logPath)
+	if !exists {
+		os.MkdirAll(f.logPath,0755)
+	}
 	//打开普通日志文件
 	filename := fmt.Sprintf("%s%s.log", f.logPath, f.logName)
 	file, err := os.OpenFile(filename, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0755)
@@ -203,7 +209,7 @@ func (f *FileLogger) Error(formart string, args ...interface{}) {
 func (f *FileLogger) Fatal(formart string, args ...interface{}) {
 	f.writeLog(LogLevelFatal, formart, args...)
 }
-func (f *FileLogger) close() {
+func (f *FileLogger) Close() {
 	f.file.Close()
 	f.errorFile.Close()
 }
@@ -214,11 +220,11 @@ func (f *FileLogger) writeLog(level int, format string, args ...interface{}) {
 	}
 	now := time.Now().Format("2006-01-02 15:04:05.000000000")
 	levelString := getLevelString(level)
-	filename, funcName, lineNo := GetLineInfo()
+	filename, funcName, lineNo := utils.GetLineInfo()
 
 	msg := fmt.Sprintf(format, args...)
 
-	logData := &LogData{
+	logData := &utils.LogData{
 		Message:       msg,
 		TimeStr:       now,
 		LevelStr:      levelString,

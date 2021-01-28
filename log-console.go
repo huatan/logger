@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"github.com/huatan/logger/utils"
 	"os"
 	"time"
 )
@@ -45,14 +46,14 @@ func (c *ConsoleLogger) Error(formart string, args ...interface{}) {
 func (c *ConsoleLogger) Fatal(formart string, args ...interface{}) {
 	c.writeLog(LogLevelFatal, formart, args...)
 }
-func (c *ConsoleLogger) close() {}
+func (c *ConsoleLogger) Close() {}
 func (c *ConsoleLogger) writeLog(level int, format string, args ...interface{}) {
 	if c.level > level {
 		return
 	}
 	now := time.Now().Format("2006-01-02 15:04:05.000000000")
 	levelString := getLevelString(level)
-	filename, funcName, lineNo := GetLineInfo()
+	filename, funcName, lineNo := utils.GetLineInfo()
 
 	msg := fmt.Sprintf(format, args...)
 
